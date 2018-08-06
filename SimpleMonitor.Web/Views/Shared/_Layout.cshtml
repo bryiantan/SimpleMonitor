@@ -1,0 +1,55 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - My ASP.NET Application</title>
+    @Styles.Render("~/Content/css")
+    @Styles.Render("~/Content/jqgrid")
+    <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    @*  <link href="/Content/themes/sunny/jquery-ui.min.css" rel="stylesheet"/>
+        <link href="/Content/jquery.jqGrid/ui.jqgrid.css" rel="stylesheet"/>
+           <link href="/Content/bootstrap.css" rel="stylesheet" />
+            <link href="/Content/site.css" rel="stylesheet" />
+            <link href="/Content/themes/redmond/jquery-ui.css" rel="stylesheet" />
+            <link href="/Content/jquery.jqGrid/ui.jqgrid.css" rel="stylesheet" />*@
+
+    @Scripts.Render("~/bundles/modernizr")
+
+</head>
+<body>
+    <div class="container-fluid">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            @Html.ActionLink("Poor Man IIS Log Viewer", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        @Html.ActionLink("Home", "Index", "Home", new { @class = "nav-link" })
+                    </li>
+                    <li class="nav-item">
+                        @Html.ActionLink("About", "About", "Home", new { @class = "nav-link" })
+                    </li>
+                    <li class="nav-item">
+                        @Html.ActionLink("Contact", "Contact", "Home", new { @class = "nav-link" })
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <div class="container body-content">
+            @RenderBody()
+            <hr />
+            <footer>
+                <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+            </footer>
+        </div>
+    </div>
+  
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/jqgrid")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,10 @@
+﻿@functions{
+    public string GetAntiForgeryToken()
+    {
+        string cookieToken, formToken;
+        AntiForgery.GetTokens(null, out cookieToken, out formToken);
+        return cookieToken + "," + formToken;
+    }
+}
+
+<input type="hidden" id="hdnAntiForgeryToken" value="@GetAntiForgeryToken()" />

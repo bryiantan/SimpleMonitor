@@ -1,0 +1,261 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="SimpleMonitorModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="BlockedIp">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IpAddress" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="IsBlocked" Type="bit" Nullable="false" />
+          <Property Name="BlockHit" Type="int" Nullable="false" />
+          <Property Name="LastUpdatedDate" Type="datetime" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'SimpleMonitor.dbo.vwIISLog' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="vwIISLog">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="sPort" />
+            <PropertyRef Name="csUriQuery" />
+            <PropertyRef Name="scStatus" />
+            <PropertyRef Name="csUserAgent" />
+            <PropertyRef Name="csCookie" />
+            <PropertyRef Name="csReferer" />
+            <PropertyRef Name="IsBlocked" />
+            <PropertyRef Name="BlockHit" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="LogFilename" Type="varchar" MaxLength="255" />
+          <Property Name="LogRow" Type="int" />
+          <Property Name="date" Type="varchar" MaxLength="22" />
+          <Property Name="time" Type="datetime" />
+          <Property Name="cIp" Type="varchar" MaxLength="255" />
+          <Property Name="csUsername" Type="varchar" MaxLength="255" />
+          <Property Name="sSitename" Type="varchar" MaxLength="255" />
+          <Property Name="sComputername" Type="varchar" MaxLength="255" />
+          <Property Name="sIp" Type="varchar" MaxLength="255" />
+          <Property Name="sPort" Type="int" Nullable="false" />
+          <Property Name="csMethod" Type="varchar" MaxLength="255" />
+          <Property Name="csUriStem" Type="varchar" MaxLength="255" />
+          <Property Name="csUriQuery" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="scStatus" Type="int" Nullable="false" />
+          <Property Name="scSubstatus" Type="int" />
+          <Property Name="scWin32Status" Type="int" />
+          <Property Name="scBytes" Type="int" />
+          <Property Name="csBytes" Type="int" />
+          <Property Name="timeTaken" Type="int" />
+          <Property Name="csVersion" Type="varchar" MaxLength="255" />
+          <Property Name="csHost" Type="varchar" MaxLength="255" />
+          <Property Name="csUserAgent" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="csCookie" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="csReferer" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="sEvent" Type="varchar" MaxLength="255" />
+          <Property Name="sProcessType" Type="varchar" MaxLength="255" />
+          <Property Name="sUserTime" Type="real" />
+          <Property Name="sKernelTime" Type="real" />
+          <Property Name="sPageFaults" Type="int" />
+          <Property Name="sTotalProcs" Type="int" />
+          <Property Name="sActiveProcs" Type="int" />
+          <Property Name="sStoppedProcs" Type="int" />
+          <Property Name="IsBlocked" Type="varchar" MaxLength="3" Nullable="false" />
+          <Property Name="BlockHit" Type="int" Nullable="false" />
+          <Property Name="ApplicationName" Type="varchar" MaxLength="150" />
+        </EntityType>
+        <EntityContainer Name="SimpleMonitorModelStoreContainer">
+          <EntitySet Name="BlockedIp" EntityType="Self.BlockedIp" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="vwIISLog" EntityType="Self.vwIISLog" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [vwIISLog].[Id] AS [Id], 
+    [vwIISLog].[LogFilename] AS [LogFilename], 
+    [vwIISLog].[LogRow] AS [LogRow], 
+    [vwIISLog].[date] AS [date], 
+    [vwIISLog].[time] AS [time], 
+    [vwIISLog].[cIp] AS [cIp], 
+    [vwIISLog].[csUsername] AS [csUsername], 
+    [vwIISLog].[sSitename] AS [sSitename], 
+    [vwIISLog].[sComputername] AS [sComputername], 
+    [vwIISLog].[sIp] AS [sIp], 
+    [vwIISLog].[sPort] AS [sPort], 
+    [vwIISLog].[csMethod] AS [csMethod], 
+    [vwIISLog].[csUriStem] AS [csUriStem], 
+    [vwIISLog].[csUriQuery] AS [csUriQuery], 
+    [vwIISLog].[scStatus] AS [scStatus], 
+    [vwIISLog].[scSubstatus] AS [scSubstatus], 
+    [vwIISLog].[scWin32Status] AS [scWin32Status], 
+    [vwIISLog].[scBytes] AS [scBytes], 
+    [vwIISLog].[csBytes] AS [csBytes], 
+    [vwIISLog].[timeTaken] AS [timeTaken], 
+    [vwIISLog].[csVersion] AS [csVersion], 
+    [vwIISLog].[csHost] AS [csHost], 
+    [vwIISLog].[csUserAgent] AS [csUserAgent], 
+    [vwIISLog].[csCookie] AS [csCookie], 
+    [vwIISLog].[csReferer] AS [csReferer], 
+    [vwIISLog].[sEvent] AS [sEvent], 
+    [vwIISLog].[sProcessType] AS [sProcessType], 
+    [vwIISLog].[sUserTime] AS [sUserTime], 
+    [vwIISLog].[sKernelTime] AS [sKernelTime], 
+    [vwIISLog].[sPageFaults] AS [sPageFaults], 
+    [vwIISLog].[sTotalProcs] AS [sTotalProcs], 
+    [vwIISLog].[sActiveProcs] AS [sActiveProcs], 
+    [vwIISLog].[sStoppedProcs] AS [sStoppedProcs], 
+    [vwIISLog].[IsBlocked] AS [IsBlocked], 
+    [vwIISLog].[BlockHit] AS [BlockHit], 
+    [vwIISLog].[ApplicationName] AS [ApplicationName]
+    FROM [dbo].[vwIISLog] AS [vwIISLog]</DefiningQuery>
+          </EntitySet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="SimpleMonitorModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="SimpleMonitorEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="BlockedIps" EntityType="SimpleMonitorModel.BlockedIp" />
+          <EntitySet Name="vwIISLogs" EntityType="SimpleMonitorModel.vwIISLog" />
+        </EntityContainer>
+        <EntityType Name="BlockedIp">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IpAddress" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="IsBlocked" Type="Boolean" Nullable="false" />
+          <Property Name="LastUpdatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="BlockHit" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="vwIISLog">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="sPort" />
+            <PropertyRef Name="csUriQuery" />
+            <PropertyRef Name="scStatus" />
+            <PropertyRef Name="csUserAgent" />
+            <PropertyRef Name="csCookie" />
+            <PropertyRef Name="csReferer" />
+            <PropertyRef Name="IsBlocked" />
+            <PropertyRef Name="BlockHit" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="LogFilename" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="LogRow" Type="Int32" />
+          <Property Name="date" Type="String" MaxLength="22" FixedLength="false" Unicode="false" />
+          <Property Name="time" Type="DateTime" Precision="3" />
+          <Property Name="cIp" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="csUsername" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="sSitename" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="sComputername" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="sIp" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="sPort" Type="Int32" Nullable="false" />
+          <Property Name="csMethod" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="csUriStem" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="csUriQuery" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="scStatus" Type="Int32" Nullable="false" />
+          <Property Name="scSubstatus" Type="Int32" />
+          <Property Name="scWin32Status" Type="Int32" />
+          <Property Name="scBytes" Type="Int32" />
+          <Property Name="csBytes" Type="Int32" />
+          <Property Name="timeTaken" Type="Int32" />
+          <Property Name="csVersion" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="csHost" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="csUserAgent" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="csCookie" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="csReferer" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="sEvent" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="sProcessType" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="sUserTime" Type="Single" />
+          <Property Name="sKernelTime" Type="Single" />
+          <Property Name="sPageFaults" Type="Int32" />
+          <Property Name="sTotalProcs" Type="Int32" />
+          <Property Name="sActiveProcs" Type="Int32" />
+          <Property Name="sStoppedProcs" Type="Int32" />
+          <Property Name="IsBlocked" Type="String" Nullable="false" MaxLength="3" FixedLength="false" Unicode="false" />
+          <Property Name="BlockHit" Type="Int32" Nullable="false" />
+          <Property Name="ApplicationName" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="SimpleMonitorModelStoreContainer" CdmEntityContainer="SimpleMonitorEntities">
+          <EntitySetMapping Name="BlockedIps">
+            <EntityTypeMapping TypeName="SimpleMonitorModel.BlockedIp">
+              <MappingFragment StoreEntitySet="BlockedIp">
+                <ScalarProperty Name="BlockHit" ColumnName="BlockHit" />
+                <ScalarProperty Name="LastUpdatedDate" ColumnName="LastUpdatedDate" />
+                <ScalarProperty Name="IsBlocked" ColumnName="IsBlocked" />
+                <ScalarProperty Name="IpAddress" ColumnName="IpAddress" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="vwIISLogs">
+            <EntityTypeMapping TypeName="SimpleMonitorModel.vwIISLog">
+              <MappingFragment StoreEntitySet="vwIISLog">
+                <ScalarProperty Name="ApplicationName" ColumnName="ApplicationName" />
+                <ScalarProperty Name="BlockHit" ColumnName="BlockHit" />
+                <ScalarProperty Name="IsBlocked" ColumnName="IsBlocked" />
+                <ScalarProperty Name="sStoppedProcs" ColumnName="sStoppedProcs" />
+                <ScalarProperty Name="sActiveProcs" ColumnName="sActiveProcs" />
+                <ScalarProperty Name="sTotalProcs" ColumnName="sTotalProcs" />
+                <ScalarProperty Name="sPageFaults" ColumnName="sPageFaults" />
+                <ScalarProperty Name="sKernelTime" ColumnName="sKernelTime" />
+                <ScalarProperty Name="sUserTime" ColumnName="sUserTime" />
+                <ScalarProperty Name="sProcessType" ColumnName="sProcessType" />
+                <ScalarProperty Name="sEvent" ColumnName="sEvent" />
+                <ScalarProperty Name="csReferer" ColumnName="csReferer" />
+                <ScalarProperty Name="csCookie" ColumnName="csCookie" />
+                <ScalarProperty Name="csUserAgent" ColumnName="csUserAgent" />
+                <ScalarProperty Name="csHost" ColumnName="csHost" />
+                <ScalarProperty Name="csVersion" ColumnName="csVersion" />
+                <ScalarProperty Name="timeTaken" ColumnName="timeTaken" />
+                <ScalarProperty Name="csBytes" ColumnName="csBytes" />
+                <ScalarProperty Name="scBytes" ColumnName="scBytes" />
+                <ScalarProperty Name="scWin32Status" ColumnName="scWin32Status" />
+                <ScalarProperty Name="scSubstatus" ColumnName="scSubstatus" />
+                <ScalarProperty Name="scStatus" ColumnName="scStatus" />
+                <ScalarProperty Name="csUriQuery" ColumnName="csUriQuery" />
+                <ScalarProperty Name="csUriStem" ColumnName="csUriStem" />
+                <ScalarProperty Name="csMethod" ColumnName="csMethod" />
+                <ScalarProperty Name="sPort" ColumnName="sPort" />
+                <ScalarProperty Name="sIp" ColumnName="sIp" />
+                <ScalarProperty Name="sComputername" ColumnName="sComputername" />
+                <ScalarProperty Name="sSitename" ColumnName="sSitename" />
+                <ScalarProperty Name="csUsername" ColumnName="csUsername" />
+                <ScalarProperty Name="cIp" ColumnName="cIp" />
+                <ScalarProperty Name="time" ColumnName="time" />
+                <ScalarProperty Name="date" ColumnName="date" />
+                <ScalarProperty Name="LogRow" ColumnName="LogRow" />
+                <ScalarProperty Name="LogFilename" ColumnName="LogFilename" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

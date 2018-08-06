@@ -1,0 +1,322 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<br />
+
+@{Html.RenderPartial("_TokenPartial");}
+
+<br />
+
+@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "__AjaxAntiForgeryForm" }))
+{
+    <div id="filterLable"></div>
+    @Html.ValidationSummary(true)
+    @Html.AntiForgeryToken()
+    <div>
+        <table id="jqGrid"></table>
+        <div id="jqGridPager"></div>
+    </div>
+}
+
+@section Scripts {
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+
+            function boxFormatter(cellvalue, options, rowObject) {
+                return '<div style="max-height: 120px">' + cellvalue + '</div>';
+            }
+
+            function linkFormatter(cellvalue, options, rowObject) {
+                //blocked
+                if (rowObject.IsBlocked == 'Yes') {
+                    return '<span style="cursor:pointer" class="blockedIp fa fa-ban red-icon" selectedValue="' + rowObject.cIp + '"> </span>';
+                } else {
+                    return '<span style="cursor:pointer" class="unBlockIp fa fa-check green-icon" selectedValue="' + rowObject.cIp + '"> </span>';
+                }
+            }
+
+            var resetAltRows = function () {
+                $(this).children("tbody:first").children('tr.jqgrow').removeClass('webgrid-alternating-row');
+                $(this).children("tbody:first").children('tr.jqgrow:visible:odd').addClass('webgrid-alternating-row');
+            };
+
+
+            //get all httpstatus
+            var httpStatusJson = $.ajax({
+                url: '@Url.Action("GetHttpStatus", "Home", new { Area = ""})',
+                async: false,
+                headers: { 'RequestVerificationToken': $("#hdnAntiForgeryToken").val() },
+                success: function (data, result) {
+                    if (!result)
+                        alert('Failure to retrieve the httpStatusJson.');
+                }
+            }).responseJSON;
+
+            var httpStatusList = '';
+            $(httpStatusJson).each(function () {
+                httpStatusList += this.ScStatus + ':' + this.ScStatus + ';';
+            });
+
+            //get all application
+            var appListJson = $.ajax({
+                url: '@Url.Action("GetApplicationName", "Home", new { Area = ""})',
+                async: false,
+                headers: { 'RequestVerificationToken': $("#hdnAntiForgeryToken").val() },
+                success: function (data, result) {
+                    if (!result)
+                        alert('Failure to retrieve the httpStatusJson.');
+                }
+            }).responseJSON;
+
+            var appList = '';
+            $(appListJson).each(function () {
+                appList += this.Name + ':' + this.Name + ';';
+            });
+
+            $("#jqGrid").jqGrid({
+                url: '@Url.Action("GetLogView", "Home", new { Area = ""})',
+                datatype: "json",
+                contentType: "application/json; charset-utf-8",
+                mtype: 'POST',
+                autoencode: false,
+                colNames: ['ID', '', 'App Name', 'Blocked?', 'Blocked Hit', 'Date', 'Ip', 'Port', 'Method', 'URI-reference', 'QueryString', 'Status', 'User Agent', 'Cookie', 'Referer'],
+                colModel: [
+                    { name: 'Id', width: 50, search: false, sorttype: "integer" },
+                    {
+                        name: 'Icon', width: 30, formatter: linkFormatter, search: false
+                    },
+                     {
+                         name: 'ApplicationName', index: 'ApplicationName', width: 120, sopt: ['eq'],
+                         stype: "select",
+                         searchoptions: { value: appList.slice(0, -1), defaultValue: 'ALL' }
+                     },
+                    {
+                        name: 'IsBlocked', width: 60, index: 'IsBlocked'
+                    },
+                    {
+                        name: 'BlockHit', width: 100, searchoptions: {
+                            searchOperators: true,
+                            sopt: ['ge']
+                        }
+                    },
+                    {
+                        name: 'date', width: 150
+                    },
+                    {
+                        name: 'cIp', width: 120
+                    },
+                    {
+                        name: 'sPort', width: 80, searchoptions: {
+                            searchOperators: true,
+                            sopt: ['eq']
+                        }
+                    },
+                    {
+                        name: 'csMethod', width: 80
+                    },
+                    {
+                        name: 'csUriStem', width: 120, cellattr: function (rowId, tv, rawObject, cm, rdata) { return 'style="white-space: normal;max-height: 100px"' }
+                    },
+                    {
+                        name: 'csUriQuery', width: 150, formatter: boxFormatter
+                    },
+                    {
+                        name: 'scStatus', index: 'scStatus', width: 80, sopt: ['eq'],
+                        stype: "select",
+                        searchoptions: { value: httpStatusList.slice(0, -1), defaultValue: 'ALL' }
+                    },
+                    {
+                        name: 'csUserAgent', width: 200, cellattr: function (rowId, tv, rawObject, cm, rdata) { return 'style="white-space: normal;max-height: 100px"' }
+                    },
+                    {
+                        name: 'csCookie', width: 100, cellattr: function (rowId, tv, rawObject, cm, rdata) { return 'style="white-space: normal;max-height: 100px"' }
+                    },
+                    {
+                        name: 'csReferer', width: 100, cellattr: function (rowId, tv, rawObject, cm, rdata) { return 'style="white-space: normal;max-height: 100px"' }
+                    }
+                ],
+                rowNum: '@int.Parse(SimpleMonitor.Business.ApplicationSetting.JqGridDefaultPageSize)',
+                width: 800,
+                autowidth: false,
+                shrinkToFit: false,
+                height: 480,
+                sortable: true,
+                sortname: "Id",
+                sortorder: 'desc',
+                scrollOffset: 0,
+                ignoreCase: true,
+                rowList: [10, 30, 50, 100],
+                viewrecords: true,
+                rownumbers: false,
+                altRows: true,
+                loadonce: false,
+                pager: "#jqGridPager",
+                loadBeforeSend: function (jqXHR) {
+                    jqXHR.setRequestHeader("RequestVerificationToken", $("#hdnAntiForgeryToken").val());
+                },
+                loadComplete: function () {
+                    // $("#jqGrid").setColProp('scStatus', { editoptions: { value: httpStatusJson } });
+                },
+                jsonReader: {
+                    root: "rows",
+                    page: "page",
+                    total: "total",
+                    records: "records",
+                    repeatitems: false,
+                    cell: "cell",
+                    id: "Id"
+                }
+            });
+
+            jQuery("#jqGrid").jqGrid('navGrid', '#jqGridPager', { add: false, edit: false, del: false, search: true, refresh: true }, {}, {}, {}, {
+                multipleSearch: true, overlay: true
+            });
+
+            jQuery("#jqGrid").jqGrid('navButtonAdd', '#jqGridPager',
+                                  {
+                                      caption: "", title: "Toggle Search Bar", buttonicon: 'ui-icon-pin-s',
+                                      onClickButton: function () { $("#jqGrid")[0].toggleToolbar() }
+                                  });
+
+            jQuery("#jqGrid").jqGrid('filterToolbar', {
+                stringResult: true,
+                searchOnEnter: true,
+                defaultSearch: "cn",
+                clearSearch: false,
+                ignoreCase: true
+            });
+
+            //alert($("#jqGrid").width());
+            $(window).bind('resize', function () {
+                $("#jqGrid").setGridWidth(
+                    //$(window).width()
+                    $(".container.body-content").width()
+                    );
+
+                $("#gview_jqGrid").css("width", "");
+                $(".ui-state-default.ui-jqgrid-hdiv").css("width", "");
+                $(".ui-jqgrid-bdiv").css("width", "");
+                $("#jqGridPager").css("width", "");
+
+            }).trigger('resize');
+
+        });
+
+        $(document).on('mouseover', '.blockedIp', function () {
+            $(this).removeClass('red-icon').addClass('green-icon').prop('title', 'Unblock')
+                .removeClass('glyphicon-ban-circle').addClass('glyphicon-ok');//.css("red-icon", "");
+            return false;
+        });
+
+        $(document).on('mouseout', '.blockedIp', function () {
+            $(this).removeClass('green-icon').addClass('red-icon')
+            .removeClass('glyphicon-ok').addClass('glyphicon-ban-circle');
+            return false;
+        });
+
+        $(document).on('mouseover', '.unBlockIp', function () {
+            $(this).removeClass('green-icon').addClass('red-icon').prop('title', 'Block')
+            .removeClass('glyphicon-ok').addClass('glyphicon-ban-circle');//.css("red-icon", "");
+            return false;
+        });
+
+        $(document).on('mouseout', '.unBlockIp', function () {
+            $(this).removeClass('red-icon').addClass('green-icon')
+            .removeClass('glyphicon-ban-circle').addClass('glyphicon-ok');
+            return false;
+        });
+
+        $(document).on('click', '.blockedIp', function () {
+            $("#dialog-confirm").data('actionType', 'unBlockIp').dialog("open");
+            return false;
+        });
+
+        $(document).on('click', '.unBlockIp', function () {
+            $("#dialog-confirm").data('actionType', 'blockIp').dialog("open");
+            return false;
+        });
+
+        function getSelectedIp(columnName) {
+            var myGrid = $('#jqGrid'),
+              selRowId = myGrid.jqGrid('getGridParam', 'selrow'),
+              celValue = myGrid.jqGrid('getCell', selRowId, columnName);
+
+            return celValue;
+        }
+
+        function blockIpAddress(actionType) {
+
+            var actionName = '';
+
+            if (actionType == 'blockIp') {
+                actionName = 'Block';
+            }
+            else {
+                actionName = 'UnBlock';
+            }
+
+            var model = {
+                Ip: getSelectedIp('cIp'),
+                Action: actionName
+            };
+
+            $.ajax({
+                type: "POST",
+                dataType: "json",
+                contentType: "application/json;charset=utf-8",
+                beforeSend: function (request) {
+                    request.setRequestHeader("RequestVerificationToken", $("#hdnAntiForgeryToken").val());
+                },
+                url: '@Url.Action("BlockIpAddress", "Home", new { Area = ""})',
+                data: JSON.stringify(model),
+                success: function (msg) {
+                    $("#dialog-confirm").dialog("close");
+                    jQuery("#jqGrid").trigger("reloadGrid");
+                }
+            });
+        }
+
+    </script>
+
+    <div id="dialog-confirm" title="Update Confirmation" style="display:none">
+        <p>
+            <span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>
+            <span class="blockMsg">Are you sure?</span>
+        </p>
+    </div>
+    <script>
+        $(function () {
+            $("#dialog-confirm").dialog({
+                resizable: false,
+                height: "auto",
+                autoOpen: false,
+                width: 400,
+                modal: true,
+                buttons: {
+                    "Continue": function () {
+                        var actionType = $("#dialog-confirm").data('actionType');
+                        blockIpAddress(actionType);
+                    },
+                    Cancel: function () {
+                        $(this).dialog("close");
+                    }
+                },
+                open: function (event, ui) {
+                    var actionType = $("#dialog-confirm").data('actionType');
+                    var actionText = '';
+
+                    if (actionType == 'blockIp') {
+                        actionText = 'Block this IP Address? ';
+                    }
+                    else {
+                        actionText = 'Unblock this IP Address? ';
+                    }
+
+                    $("#dialog-confirm .blockMsg").text(actionText + getSelectedIp('cIp'));
+                }
+            });
+        });
+    </script>
+}

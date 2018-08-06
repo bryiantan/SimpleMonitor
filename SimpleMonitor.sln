@@ -1,0 +1,58 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DownloadIISLog", "DownloadIISLog\DownloadIISLog.csproj", "{945E68C3-1829-451E-A88A-98BCA7AF674A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleMonitor.Business", "SimpleMonitor.Business\SimpleMonitor.Business.csproj", "{7BCD1205-B896-4AB4-8607-69BE6463966E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleMonitor.Web", "SimpleMonitor.Web\SimpleMonitor.Web.csproj", "{8EC06063-9939-49B2-BAA9-3B3C94958D74}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DB", "DB", "{3A1EC9FB-B537-493E-BF9B-E38DDCF77D17}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SQL", "SQL", "{D81742BF-9DE5-4F3C-A9B5-FAF9AE9234DE}"
+	ProjectSection(SolutionItems) = preProject
+		sql\database_objects.sql = sql\database_objects.sql
+		sql\InsertUpdateBlockedIp.sql = sql\InsertUpdateBlockedIp.sql
+		sql\vwIISLog.sql = sql\vwIISLog.sql
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleMonitor.BlockIpAddress", "SimpleMonitor.BlockIpAddress\SimpleMonitor.BlockIpAddress.csproj", "{65956B82-24B0-4D0D-9CDB-A3B189779BD1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleMonitor.ScanFile", "SimpleMonitor.ScanFile\SimpleMonitor.ScanFile.csproj", "{6779CBEC-0B01-412D-978C-98B138A565E6}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{945E68C3-1829-451E-A88A-98BCA7AF674A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{945E68C3-1829-451E-A88A-98BCA7AF674A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{945E68C3-1829-451E-A88A-98BCA7AF674A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{945E68C3-1829-451E-A88A-98BCA7AF674A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7BCD1205-B896-4AB4-8607-69BE6463966E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7BCD1205-B896-4AB4-8607-69BE6463966E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7BCD1205-B896-4AB4-8607-69BE6463966E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7BCD1205-B896-4AB4-8607-69BE6463966E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8EC06063-9939-49B2-BAA9-3B3C94958D74}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8EC06063-9939-49B2-BAA9-3B3C94958D74}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8EC06063-9939-49B2-BAA9-3B3C94958D74}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8EC06063-9939-49B2-BAA9-3B3C94958D74}.Release|Any CPU.Build.0 = Release|Any CPU
+		{65956B82-24B0-4D0D-9CDB-A3B189779BD1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{65956B82-24B0-4D0D-9CDB-A3B189779BD1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{65956B82-24B0-4D0D-9CDB-A3B189779BD1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{65956B82-24B0-4D0D-9CDB-A3B189779BD1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6779CBEC-0B01-412D-978C-98B138A565E6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6779CBEC-0B01-412D-978C-98B138A565E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6779CBEC-0B01-412D-978C-98B138A565E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6779CBEC-0B01-412D-978C-98B138A565E6}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{D81742BF-9DE5-4F3C-A9B5-FAF9AE9234DE} = {3A1EC9FB-B537-493E-BF9B-E38DDCF77D17}
+	EndGlobalSection
+EndGlobal
